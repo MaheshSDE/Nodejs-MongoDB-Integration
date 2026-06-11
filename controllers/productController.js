@@ -37,7 +37,45 @@ const createProduct = async (req, res) => {
 
 const getAllProducts = async (req, res) => {
   try {
-    const product = await Product.find()
+    console.log(req.query)
+    let filter = {}
+
+    // To filter the min price/above
+    if (req.query.minPrice) {
+      filter.price = {...filter.price, $gte: Number(req.query.minPrice)}
+    }
+
+    //To filter the max price/below
+    if (req.query.maxPrice) {
+      filter.price = {...filter.price, $lte: Number(req.query.maxPrice)}
+    }
+
+    //To filter the category wise
+    if (req.query.category) {
+      filter.category = req.query.category
+    }
+
+    //To filter the name/search wise
+    if (req.query.search) {
+      filter.name = {$regex: req.query.search, $options: 'i'}
+    }
+
+    //sorting by ASC or DESC
+    let sortObj = {}
+    if (req.query.sortBy) {
+      let order = req.query.order === 'desc' ? -1 : 1
+      sortObj[req.query.sortBy] = order
+    }
+
+    //pagination
+    const page = parseInt(req.query.page, 10) || 1
+    const limit = parseInt(req.query.limit, 10) || 10
+    const skip = (page - 1) * limit
+
+    const product = await Product.find(filter)
+      .sort(sortObj)
+      .skip(skip)
+      .limit(limit)
     res.status(200).json({
       count: product.length,
       product,
