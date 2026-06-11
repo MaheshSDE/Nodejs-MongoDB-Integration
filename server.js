@@ -9,10 +9,10 @@ dotenv.config()
 app.use(express.json())
 
 //User Collection API
-app.use('/users/', userRoutes)
+app.use('/users', userRoutes)
 
 //Product Collection API
-app.use('/products/', productRoutes)
+app.use('/products', productRoutes)
 
 mongoose
   .connect(process.env.MONGODB_URL)

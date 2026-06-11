@@ -68,14 +68,13 @@ const getAllProducts = async (req, res) => {
     }
 
     //pagination
-    const page = parseInt(req.query.page, 10) || 1
-    const limit = parseInt(req.query.limit, 10) || 10
-    const skip = (page - 1) * limit
+    // const page = parseInt(req.query.page, 10) || 1
+    // const limit = parseInt(req.query.limit, 10) || 10
+    // const skip = (page - 1) * limit
 
-    const product = await Product.find(filter)
-      .sort(sortObj)
-      .skip(skip)
-      .limit(limit)
+    const product = await Product.find(filter).sort(sortObj)
+    // .skip(skip)
+    // .limit(limit)
     res.status(200).json({
       count: product.length,
       product,
