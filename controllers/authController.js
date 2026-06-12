@@ -48,7 +48,7 @@ const loginUser = async (req, res) => {
   if (!isPasswordMatch) {
     return res.status(400).send('Invalid Password')
   }
-  const payload = {id: user._id}
+  const payload = {id: user._id, role: user.role}
   const jwtToken = jwt.sign(payload, process.env.SECRETE_TOKEN, {
     expiresIn: '1h',
   })

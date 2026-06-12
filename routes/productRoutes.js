@@ -9,8 +9,14 @@ const {
   deleteProduct,
 } = require('../controllers/productController')
 const {authenticateToken} = require('../middlewares/authenticateToken')
+const {authorizeRoles} = require('../middlewares/authorizeRoles')
 
-router.post('/add-product', createProduct)
+router.post(
+  '/add-product',
+  authenticateToken,
+  authorizeRoles(['seller']),
+  createProduct,
+)
 router.get('/', authenticateToken, getAllProducts)
 router.get('/:id', getProductById)
 router.put('/:id', updateProduct)
